@@ -1261,7 +1261,7 @@ end)
 local menuBindButton
 
 local function updateTitle()
-	title.Text = "HVH Client Menu  |  Press " .. Settings.MenuKey.Name .. " to Open/Close"
+	title.Text = "CMENYOO  |  Press " .. Settings.MenuKey.Name .. " to Open/Close"
 end
 
 local function makeToggle(parent, text, position, getValue, setValue, defaultKey)
