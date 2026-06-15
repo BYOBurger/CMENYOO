@@ -1,5 +1,7 @@
+--// CMENYOO
 --// Team Chams + Grouped Object Search Chams + Noclip + Fly + Teleport Menu
 --// SAFE CAMERA VERSION: does NOT touch CameraMode, CameraType, CameraSubject, or MouseBehavior
+--// Mouse icon is shown only while menu is open, then restored
 --// Put this LocalScript in StarterPlayer > StarterPlayerScripts
 --// For your own Roblox game
 
@@ -63,6 +65,8 @@ local teleportDropdownButton = nil
 local teleportListFrame = nil
 local teleportListLayout = nil
 local teleportPlayerButtons = {}
+
+local savedMouseIconEnabled = nil
 
 local oldGui = PlayerGui:FindFirstChild("ClientHVHMenu")
 if oldGui then
@@ -161,11 +165,21 @@ local function updateMouseState()
 	end
 
 	if menuOpen then
+		if savedMouseIconEnabled == nil then
+			savedMouseIconEnabled = UserInputService.MouseIconEnabled
+		end
+
 		mouseUnlockButton.Visible = true
 		mouseUnlockButton.Modal = true
+		UserInputService.MouseIconEnabled = true
 	else
 		mouseUnlockButton.Modal = false
 		mouseUnlockButton.Visible = false
+
+		if savedMouseIconEnabled ~= nil then
+			UserInputService.MouseIconEnabled = savedMouseIconEnabled
+			savedMouseIconEnabled = nil
+		end
 	end
 end
 
@@ -1249,6 +1263,11 @@ local function unloadScript()
 	mouseUnlockButton.Modal = false
 	mouseUnlockButton.Visible = false
 
+	if savedMouseIconEnabled ~= nil then
+		UserInputService.MouseIconEnabled = savedMouseIconEnabled
+		savedMouseIconEnabled = nil
+	end
+
 	if screenGui then
 		screenGui:Destroy()
 	end
@@ -1597,7 +1616,8 @@ makeLabel(configPage, "Left-click = open/close menu", UDim2.new(0, 10, 0, 125))
 makeLabel(configPage, "Right-click = rebind menu key", UDim2.new(0, 10, 0, 150))
 makeLabel(configPage, "Drag from the top bar to move the menu.", UDim2.new(0, 10, 0, 185))
 makeLabel(configPage, "Camera safe: this version does not force MouseBehavior.", UDim2.new(0, 10, 0, 210))
-makeLabel(configPage, "Unload removes chams, noclip, fly, and GUI.", UDim2.new(0, 10, 0, 235))
+makeLabel(configPage, "Mouse icon is restored after closing/unloading.", UDim2.new(0, 10, 0, 235))
+makeLabel(configPage, "Unload removes chams, noclip, fly, and GUI.", UDim2.new(0, 10, 0, 260))
 
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
 	if unloaded then
